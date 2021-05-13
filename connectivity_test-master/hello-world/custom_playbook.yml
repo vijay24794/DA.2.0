@@ -1,0 +1,13 @@
+---
+
+- name: "Custom playbook for {{ hostvars['localhost']['r_name'] }}"
+  hosts: "{{ hostvars['localhost']['affected_host'] }}"
+  ignore_errors: true
+  vars: 
+    r_name: "{{ hostvars['localhost']['r_name'] }}"
+
+  tasks:
+
+    - name: Dummy task
+      debug:
+        msg: "Hello world!"

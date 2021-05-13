@@ -1,0 +1,41 @@
+---
+
+- name: "Run common playbook for {{ hostvars['localhost']['common_role_name'] }}"
+  hosts: "{{ hostvars['localhost']['affected_host'] }}"
+  ignore_errors: true
+  vars: 
+    common_role_name: "{{ hostvars['localhost']['common_role_name'] }}"
+
+  tasks:
+    - name: Set automation name
+      set_fact:
+        exec_automation: "{{ common_role_name }}"
+
+    - name: Load config var vars_files
+      include_vars:
+        dir: "{{ common_role_name }}"
+        ignore_unknown_extensions: true
+      when: common_role_name != "None"
+
+    - name: Intitialize incident data
+      import_role:
+        name: "incident-data"
+      vars:
+        exec_stage: "header"
+
+# Possibly include running the role in incident-data (exec_stage: "main")
+    - name: Run the main role
+      include_role:
+        name: "{{ common_role_name }}"
+      when: common_role_name != "None"
+
+
+- name: "Run footer playbook for {{ hostvars['localhost']['common_role_name'] }}"
+  hosts: "{{ hostvars['localhost']['affected_host'] }}"
+  ignore_errors: true
+  tasks:
+    - name: Finalize incident data
+      import_role:
+        name: "incident-data"
+      vars:
+        exec_stage: "footer"

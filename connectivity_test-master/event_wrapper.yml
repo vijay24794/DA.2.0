@@ -1,0 +1,34 @@
+---     
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  ignore_errors: true
+  vars_files:
+    - blacklistevents_rules.yml
+  roles:
+    - role: ansible-role-event-global-eventwrapper
+  vars:
+    final_ack: false
+    eiroles_enable:
+      blacklisting_role: true
+      socks_tunnel_role: true
+      final_ack_role: true
+
+
+# ***** Calling global content playbook  *****
+- name: Include the mapper rules config file
+  import_playbook: mapper.yml
+  when:
+    - 'hostvars["localhost"]["blacklist"] == false'
+    - '(hostvars[hostvars["localhost"]["affected_host"]]["host_reachable"]|bool) == true'
+  ignore_errors: true
+
+
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  ignore_errors: true
+  roles:
+    - role: ansible-role-event-global-eventwrapper
+  vars:
+    final_ack: true

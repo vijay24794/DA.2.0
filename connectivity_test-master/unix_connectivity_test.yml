@@ -1,0 +1,19 @@
+# **** Setting Socket tunnel ****
+- name: Checking Unix Connectivity
+  hosts: all
+  become: true
+  gather_facts: false
+  ignore_errors: true
+  vars:
+      account_code: "{{ hostvars['localhost']['account_code'] }}"
+      trans_num: "{{ hostvars['localhost']['trans_num'] }}"
+  vars_files:
+     - vars/settings.yml
+  tasks:
+    - name: Check Unix Connectivity
+      ping:
+      register: ping_result
+    - debug: msg="Unble to reach endpoint"
+      when: '"unreachable" in ping_result and ping_result.unreachable'
+    - debug: msg="Able to reach endpoint"
+      when: '"ping" in ping_result and ping_result.ping=="pong"'

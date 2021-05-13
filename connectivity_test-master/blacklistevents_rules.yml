@@ -1,0 +1,18 @@
+#blacklist_rules:
+# Rule 1
+#  - "AssignedGroup": "Service Desk BLE"
+#    "AssetID": "^.*(40$|30$)$"
+# Rule 2
+#  - "Abstract": ".*(FooBar|BarFoo).*"
+#    #"AssetID": "^10.120.134.$".$"
+#    "AssetID": "^linuxTest134Svr.*$"
+# Rule 3
+#  - "Hostname": "sensitive_target.*"
+#whitelist_rules:
+# Rule 4
+#  - "Abstract": ".*(WRule4).*"
+# Rule 5
+#  - "AssetID": "^.*(10$|20$)$"
+# Rule 6
+#  - "AlertKey": "Trustworthy_AK"
+#    #"Hostname": "sensitive_target_3"
